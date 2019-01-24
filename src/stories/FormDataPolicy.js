@@ -395,11 +395,14 @@ function Story(componet) {
   return <SpecificStory />;
 }
 
-function UpStory(key, ndx) {
+function tUpStory(key, ndx) {
   // Correct! JSX type can be a capitalized variable.
-  const componet =
-    DataPolicyFileds[key + "meta"][this.props.values[key]].component;
-  const SpecificStory = componet;
+  const componet = DataPolicyFileds[key + "meta"][ndx];
+
+  const SpecificStory = componet.component;
+  if (SpecificStory === undefined) {
+    console.log(key);
+  }
   return <SpecificStory />;
 }
 class MyFormM extends React.Component {
@@ -415,11 +418,14 @@ class MyFormM extends React.Component {
     });
   };
 
-  tUpStory = (key, ndx) => {
+  UpStory = (key, ndx) => {
     // Correct! JSX type can be a capitalized variable.
-    const componet =
-      DataPolicyFileds[key + "meta"][this.props.values[key]].component;
-    const SpecificStory = componet;
+    const componet = DataPolicyFileds[key + "meta"][ndx];
+
+    const SpecificStory = componet.component;
+    if (SpecificStory === undefined) {
+      console.log(key);
+    }
     return <SpecificStory />;
   };
   onCloseDrawer = () => {
@@ -561,15 +567,6 @@ class MyFormM extends React.Component {
               >
                 {"View"}
               </Button>
-              <Drawer
-                title="Basic Drawer"
-                placement="right"
-                closable={false}
-                onClose={this.onCloseDrawer}
-                visible={this.state.visible}
-              >
-                {UpStory(key, this.props.values[key])}
-              </Drawer>
             </Col>
           </Row>
           <Input
@@ -583,6 +580,16 @@ class MyFormM extends React.Component {
             name={key}
           />
           <ErrorMessage name="name">{msg => <div>{msg}</div>}</ErrorMessage>
+          <Drawer
+            width={800}
+            title={key}
+            placement="right"
+            closable={false}
+            onClose={this.onCloseDrawer}
+            visible={this.state.visible}
+          >
+            {this.UpStory(key, this.props.values[key])}
+          </Drawer>
         </Form.Item>
       );
   };
@@ -643,7 +650,7 @@ const MyEnhancedForm = withFormik({
     inreceptionpolicy: 2,
     outtransmissionpolicy: 1,
     outreceptionpolicy: 1,
-    company: ["BUSANBANK"]
+    company: 1
   }),
 
   // Custom sync validation
