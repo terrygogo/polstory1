@@ -11,6 +11,8 @@ import {
   Form,
   Row,
   Col,
+  Collapse,
+  Drawer,
   Slider,
   InputNumber,
   DatePicker,
@@ -23,7 +25,11 @@ import {
 } from "antd";
 import { AST_ObjectSetter } from "terser";
 import { object } from "@storybook/addon-knobs";
+
+import FormInTransPolicy from "./FormInTransmissionPolicy";
+
 const Option = Select.Option;
+const Panel = Collapse.Panel;
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -263,14 +269,172 @@ const DataPolicySchema = {
   }
 };
 
+const dateFormat = "YYYY/MM/DD";
+
+const DataPolicyFileds = {
+  intransmissionpolicymeta: [
+    {
+      id: 0,
+      name: "일반",
+      component: FormInTransPolicy,
+      date: moment("2018/01/01", dateFormat),
+      note: "main policy "
+    },
+    {
+      id: 1,
+      name: "보조",
+      component: FormInTransPolicy,
+      date: moment("2018/01/18", dateFormat),
+      note: "sub policy "
+    },
+    {
+      id: 2,
+      name: "특수",
+      component: FormInTransPolicy,
+      date: moment("2018/01/01", dateFormat),
+      note: "backup policy "
+    }
+  ],
+  inreceptionpolicymeta: [
+    {
+      id: 0,
+      name: "일반",
+      component: FormInTransPolicy,
+      date: moment("2018/01/01", dateFormat),
+      note: "main policy "
+    },
+    {
+      id: 1,
+      name: "보조",
+      component: FormInTransPolicy,
+      date: moment("2018/01/18", dateFormat),
+      note: "sub policy "
+    },
+    {
+      id: 2,
+      name: "특수",
+      component: FormInTransPolicy,
+      date: moment("2018/01/01", dateFormat),
+      note: "backup policy "
+    }
+  ],
+  outtransmissionpolicymeta: [
+    {
+      id: 0,
+      name: "일반",
+      component: FormInTransPolicy,
+      date: moment("2018/01/01", dateFormat),
+      note: "main policy "
+    },
+    {
+      id: 1,
+      name: "보조",
+      component: FormInTransPolicy,
+      date: moment("2018/01/18", dateFormat),
+      note: "sub policy "
+    },
+    {
+      id: 2,
+      name: "특수",
+      component: FormInTransPolicy,
+      date: moment("2018/01/01", dateFormat),
+      note: "backup policy "
+    }
+  ],
+  outreceptionpolicymeta: [
+    {
+      id: 0,
+      name: "일반",
+      component: FormInTransPolicy,
+      date: moment("2018/01/01", dateFormat),
+      note: "main policy "
+    },
+    {
+      id: 1,
+      name: "보조",
+      component: FormInTransPolicy,
+      date: moment("2018/01/18", dateFormat),
+      note: "sub policy "
+    },
+    {
+      id: 2,
+      name: "특수",
+      component: FormInTransPolicy,
+      date: moment("2018/01/01", dateFormat),
+      note: "backup policy "
+    }
+  ],
+  companymeta: [
+    {
+      id: 0,
+      name: "일반",
+      component: FormInTransPolicy,
+      date: moment("2018/01/01", dateFormat),
+      note: "main policy "
+    },
+    {
+      id: 1,
+      name: "보조",
+      component: FormInTransPolicy,
+      date: moment("2018/01/18", dateFormat),
+      note: "sub policy "
+    },
+    {
+      id: 2,
+      name: "특수",
+      component: FormInTransPolicy,
+      date: moment("2018/01/01", dateFormat),
+      note: "backup policy "
+    }
+  ]
+};
+
+function Story(componet) {
+  // Correct! JSX type can be a capitalized variable.
+  const SpecificStory = componet;
+  return <SpecificStory />;
+}
+
+function UpStory(key, ndx) {
+  // Correct! JSX type can be a capitalized variable.
+  const componet =
+    DataPolicyFileds[key + "meta"][this.props.values[key]].component;
+  const SpecificStory = componet;
+  return <SpecificStory />;
+}
 class MyFormM extends React.Component {
   static defaultProps = {
     onCChange: () => {}
+  };
+
+  state = { visible: false };
+
+  showDrawer = () => {
+    this.setState({
+      visible: true
+    });
+  };
+
+  tUpStory = (key, ndx) => {
+    // Correct! JSX type can be a capitalized variable.
+    const componet =
+      DataPolicyFileds[key + "meta"][this.props.values[key]].component;
+    const SpecificStory = componet;
+    return <SpecificStory />;
+  };
+  onCloseDrawer = () => {
+    this.setState({
+      visible: false
+    });
   };
   handleChangeit = e => {
     this.props.onCChange(e);
   };
 
+  FieldView = e => {
+    console.log(e.target.value, e.target.id);
+    this.showDrawer();
+  };
   buildFormEntries = (key, objs, setFieldValue, setFieldTouched) => {
     if (objs.type === "string")
       return (
@@ -289,6 +453,7 @@ class MyFormM extends React.Component {
             onBlur={() => setFieldTouched(key)}
             onPressEnter={this.props.handleSubmit}
             name={key}
+            disabled={objs.read_only}
           />
           <ErrorMessage name="name">{msg => <div>{msg}</div>}</ErrorMessage>
         </Form.Item>
@@ -367,7 +532,46 @@ class MyFormM extends React.Component {
           key={key}
           label={objs.label}
           help={objs.help_text}
+          required={objs.required}
         >
+          {" "}
+          <Row gutter={8}>
+            <Col span={12}>
+              <Select
+                defaultValue="Lucy"
+                value={this.props.values[key]}
+                onChange={event => {
+                  setFieldValue(key, event);
+                }}
+                onBlur={() => setFieldTouched(key)}
+                name={key}
+              >
+                {DataPolicyFileds[key + "meta"].map((value, ndx) => (
+                  <Option key={ndx} value={value.id}>
+                    {value.name + " / " + value.date}
+                  </Option>
+                ))}
+              </Select>
+            </Col>
+            <Col span={8}>
+              <Button
+                onClick={this.FieldView}
+                id={this.props.values[key]}
+                value={key}
+              >
+                {"View"}
+              </Button>
+              <Drawer
+                title="Basic Drawer"
+                placement="right"
+                closable={false}
+                onClose={this.onCloseDrawer}
+                visible={this.state.visible}
+              >
+                {UpStory(key, this.props.values[key])}
+              </Drawer>
+            </Col>
+          </Row>
           <Input
             placeholder="Basic usage"
             value={this.props.values[key]}
@@ -394,6 +598,7 @@ class MyFormM extends React.Component {
       setFieldTouched,
       name
     } = this.props;
+
     return (
       <Row type="flex">
         <Col span={24}>
@@ -403,12 +608,7 @@ class MyFormM extends React.Component {
             extra={<a href="#">More</a>}
             style={{ width: 800 }}
           >
-            <Form
-              onSubmit={handleSubmit}
-              type="flex"
-              justify="center"
-              align="middle"
-            >
+            <Form onSubmit={handleSubmit} type="flex">
               {Object.keys(DataPolicySchema).map((oneKey, i) => {
                 return this.buildFormEntries(
                   oneKey,
@@ -428,7 +628,6 @@ class MyFormM extends React.Component {
   }
 }
 
-const dateFormat = "YYYY/MM/DD";
 const MyEnhancedForm = withFormik({
   mapPropsToValues: props => ({
     datapolicyid: 1,
