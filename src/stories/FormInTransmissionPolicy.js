@@ -11,7 +11,7 @@ import {
   Form,
   Row,
   Col,
-  Slider,
+  Drawer,
   InputNumber,
   DatePicker,
   Input,
@@ -23,6 +23,7 @@ import {
 } from "antd";
 import { AST_ObjectSetter } from "terser";
 import { object } from "@storybook/addon-knobs";
+import FormFileExportPolicy from "./FormFileExportPolicy";
 const Option = Select.Option;
 const formItemLayout = {
   labelCol: {
@@ -162,40 +163,182 @@ const InTransPolicySchema = {
 
 const InTransPolicyFileds = {
   infilespolicymeta: [
-    { id: 0, name: "fil", infilespolicy: null, date: "1234" },
-    { id: 1, name: "file1", infilespolicy: null, date: "123456" }
+    {
+      id: 0,
+      name: "일반",
+      component: FormFileExportPolicy,
+      date: moment("2018/01/01", dateFormat),
+      note: "main policy "
+    },
+    {
+      id: 1,
+      name: "보조",
+      component: FormFileExportPolicy,
+      date: moment("2018/01/18", dateFormat),
+      note: "sub policy "
+    },
+    {
+      id: 2,
+      name: "특수",
+      component: FormFileExportPolicy,
+      date: moment("2018/01/01", dateFormat),
+      note: "backup policy "
+    }
   ],
   inexternalservicepolicymeta: [
-    { id: 0, name: "extse0", inexternalservicepolicy: null, date: "222" },
-    { id: 1, name: "extse1", inexternalservicepolicy: null, date: "333" },
-    { id: 2, name: "extse2", inreceptionpolicy: null, date: "3333" }
+    {
+      id: 0,
+      name: "일반",
+      component: FormFileExportPolicy,
+      date: moment("2018/01/01", dateFormat),
+      note: "main policy "
+    },
+    {
+      id: 1,
+      name: "보조",
+      component: FormFileExportPolicy,
+      date: moment("2018/01/18", dateFormat),
+      note: "sub policy "
+    },
+    {
+      id: 2,
+      name: "특수",
+      component: FormFileExportPolicy,
+      date: moment("2018/01/01", dateFormat),
+      note: "backup policy "
+    }
   ],
   inapprovepolicymeta: [
-    { id: 0, name: "app", inapprovepolicy: null, date: "331313" },
-    { id: 1, name: "app1", inapprovepolicy: null, date: "12313" }
+    {
+      id: 0,
+      name: "일반",
+      component: FormFileExportPolicy,
+      date: moment("2018/01/01", dateFormat),
+      note: "main policy "
+    },
+    {
+      id: 1,
+      name: "보조",
+      component: FormFileExportPolicy,
+      date: moment("2018/01/18", dateFormat),
+      note: "sub policy "
+    },
+    {
+      id: 2,
+      name: "특수",
+      component: FormFileExportPolicy,
+      date: moment("2018/01/01", dateFormat),
+      note: "backup policy "
+    }
   ],
   inclipboardpolicymeta: [
-    { id: 0, name: "cliop", inclipboardpolicy: null, date: "123123" },
-    { id: 1, name: "clip1", inclipboardpolicy: null, date: "123123123" }
+    {
+      id: 0,
+      name: "일반",
+      component: FormFileExportPolicy,
+      date: moment("2018/01/01", dateFormat),
+      note: "main policy "
+    },
+    {
+      id: 1,
+      name: "보조",
+      component: FormFileExportPolicy,
+      date: moment("2018/01/18", dateFormat),
+      note: "sub policy "
+    },
+    {
+      id: 2,
+      name: "특수",
+      component: FormFileExportPolicy,
+      date: moment("2018/01/01", dateFormat),
+      note: "backup policy "
+    }
   ],
   inwebproxypolicymeta: [
-    { id: 0, name: "webprx", inwebproxypolicy: null, date: "5555" },
-    { id: 1, name: "webprx1", inwebproxypolicy: null, date: "6666" }
+    {
+      id: 0,
+      name: "일반",
+      component: FormFileExportPolicy,
+      date: moment("2018/01/01", dateFormat),
+      note: "main policy "
+    },
+    {
+      id: 1,
+      name: "보조",
+      component: FormFileExportPolicy,
+      date: moment("2018/01/18", dateFormat),
+      note: "sub policy "
+    },
+    {
+      id: 2,
+      name: "특수",
+      component: FormFileExportPolicy,
+      date: moment("2018/01/01", dateFormat),
+      note: "backup policy "
+    }
   ],
   insendmailpolicymeta: [
-    { id: 0, name: "sendm", insendmailpolicy: null, date: "7777" },
-    { id: 1, name: "sendm1", insendmailpolicy: null, date: "8888" }
+    {
+      id: 0,
+      name: "일반",
+      component: FormFileExportPolicy,
+      date: moment("2018/01/01", dateFormat),
+      note: "main policy "
+    },
+    {
+      id: 1,
+      name: "보조",
+      component: FormFileExportPolicy,
+      date: moment("2018/01/18", dateFormat),
+      note: "sub policy "
+    },
+    {
+      id: 2,
+      name: "특수",
+      component: FormFileExportPolicy,
+      date: moment("2018/01/01", dateFormat),
+      note: "backup policy "
+    }
   ]
 };
 
 class MyFormM extends React.Component {
+  state = { visible: false, drawer: null };
+  showDrawer = () => {
+    this.setState({
+      visible: true
+    });
+  };
+  onCloseDrawer = (e, key) => {
+    console.log(key);
+    this.setState({
+      visible: false,
+      drawer: null
+    });
+  };
+  FieldView = e => {
+    console.log(e.target.value, e.target.id);
+    this.setState({
+      visible: true,
+      drawer: e.target.value
+    });
+  };
   static defaultProps = {
     onCChange: () => {}
   };
   handleChangeit = e => {
     this.props.onCChange(e);
   };
+  UpStory = (key, ndx) => {
+    // Correct! JSX type can be a capitalized variable.
+    const componet = InTransPolicyFileds[key + "meta"][ndx];
 
+    const SpecificStory = componet.component;
+    if (SpecificStory === undefined) {
+      console.log(key);
+    }
+    return <SpecificStory />;
+  };
   buildFormEntries = (key, objs, setFieldValue, setFieldTouched) => {
     if (objs.type === "string")
       return (
@@ -325,10 +468,30 @@ class MyFormM extends React.Component {
               </Select>
             </Col>
             <Col span={12}>
-              <Button>Get captcha</Button>
+              <Button
+                onClick={this.FieldView}
+                id={this.props.values[key]}
+                value={key}
+              >
+                View
+              </Button>
             </Col>
           </Row>
           <ErrorMessage name="name">{msg => <div>{msg}</div>}</ErrorMessage>
+          {this.state.visible && this.state.drawer === key ? (
+            <Drawer
+              width={440}
+              title={objs.label}
+              placement="right"
+              closable={false}
+              onClose={e => {
+                this.onCloseDrawer(e, key);
+              }}
+              visible={this.state.visible}
+            >
+              {this.UpStory(key, this.props.values[key])}
+            </Drawer>
+          ) : null}
         </Form.Item>
       );
     }
@@ -353,7 +516,7 @@ class MyFormM extends React.Component {
             size="small"
             title={name}
             extra={<a href="#">More</a>}
-            style={{ width: 800 }}
+            style={{ width: 600 }}
           >
             <Form onSubmit={handleSubmit} type="flex">
               {Object.keys(InTransPolicySchema).map((oneKey, i) => {

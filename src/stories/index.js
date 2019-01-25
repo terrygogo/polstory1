@@ -11,6 +11,7 @@ import FormClass from "./FormClassCompTemp";
 import FormDataPolicy from "./FormDataPolicy";
 import FormInTransPolicy from "./FormInTransmissionPolicy";
 import FormFileExportPolicy from "./FormFileExportPolicy";
+import AddUser from "./AddUser";
 import { Button } from "antd";
 import { withKnobs, text, boolean, number } from "@storybook/addon-knobs";
 
@@ -49,6 +50,9 @@ const stories2 = storiesOf("테스트샘플", module);
 stories2.addDecorator(withKnobs);
 stories2.addDecorator(centered);
 stories2
+  .add("추가", () => {
+    return <AddUser name="Add USer" s />;
+  })
   .add("custom input itegrated to form ik", () => {
     const name1 = text("Name", "Arunoda Susiripala");
     const age = number("Age", 89);

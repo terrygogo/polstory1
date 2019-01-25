@@ -410,14 +410,27 @@ class MyFormM extends React.Component {
     onCChange: () => {}
   };
 
-  state = { visible: false };
+  state = { visible: false, drawer: null };
 
   showDrawer = () => {
     this.setState({
       visible: true
     });
   };
-
+  onCloseDrawer = (e, key) => {
+    console.log(key);
+    this.setState({
+      visible: false,
+      drawer: null
+    });
+  };
+  FieldView = e => {
+    console.log(e.target.value, e.target.id);
+    this.setState({
+      visible: true,
+      drawer: e.target.value
+    });
+  };
   UpStory = (key, ndx) => {
     // Correct! JSX type can be a capitalized variable.
     const componet = DataPolicyFileds[key + "meta"][ndx];
@@ -428,19 +441,11 @@ class MyFormM extends React.Component {
     }
     return <SpecificStory />;
   };
-  onCloseDrawer = () => {
-    this.setState({
-      visible: false
-    });
-  };
+
   handleChangeit = e => {
     this.props.onCChange(e);
   };
 
-  FieldView = e => {
-    console.log(e.target.value, e.target.id);
-    this.showDrawer();
-  };
   buildFormEntries = (key, objs, setFieldValue, setFieldTouched) => {
     if (objs.type === "string")
       return (
@@ -580,16 +585,20 @@ class MyFormM extends React.Component {
             name={key}
           />
           <ErrorMessage name="name">{msg => <div>{msg}</div>}</ErrorMessage>
-          <Drawer
-            width={800}
-            title={key}
-            placement="right"
-            closable={false}
-            onClose={this.onCloseDrawer}
-            visible={this.state.visible}
-          >
-            {this.UpStory(key, this.props.values[key])}
-          </Drawer>
+          {this.state.visible && this.state.drawer === key ? (
+            <Drawer
+              width={680}
+              title={objs.label}
+              placement="right"
+              closable={false}
+              onClose={e => {
+                this.onCloseDrawer(e, key);
+              }}
+              visible={this.state.visible}
+            >
+              {this.UpStory(key, this.props.values[key])}
+            </Drawer>
+          ) : null}
         </Form.Item>
       );
   };
@@ -613,7 +622,7 @@ class MyFormM extends React.Component {
             size="small"
             title={name}
             extra={<a href="#">More</a>}
-            style={{ width: 800 }}
+            style={{ width: 600 }}
           >
             <Form onSubmit={handleSubmit} type="flex">
               {Object.keys(DataPolicySchema).map((oneKey, i) => {
