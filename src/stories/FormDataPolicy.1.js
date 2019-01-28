@@ -492,7 +492,16 @@ class MyFormM extends React.Component {
               </Option>
             ))}
           </Select>
-
+          <Input
+            placeholder="Basic usage"
+            value={this.props.values[key]}
+            onChange={event => {
+              setFieldValue(key, event.target.value);
+            }}
+            onBlur={() => setFieldTouched(key)}
+            onPressEnter={this.props.handleSubmit}
+            name={key}
+          />
           <ErrorMessage name="name">{msg => <div>{msg}</div>}</ErrorMessage>
         </Form.Item>
       );
@@ -514,7 +523,16 @@ class MyFormM extends React.Component {
             name={key}
             defaultChecked
           />
-
+          <Input
+            placeholder="Basic usage"
+            value={this.props.values[key]}
+            onChange={event => {
+              setFieldValue(key, event.target.value);
+            }}
+            onBlur={() => setFieldTouched(key)}
+            onPressEnter={this.props.handleSubmit}
+            name={key}
+          />
           <ErrorMessage name="name">{msg => <div>{msg}</div>}</ErrorMessage>
         </Form.Item>
       );
@@ -556,6 +574,16 @@ class MyFormM extends React.Component {
               </Button>
             </Col>
           </Row>
+          <Input
+            placeholder="Basic usage"
+            value={this.props.values[key]}
+            onChange={event => {
+              setFieldValue(key, event.target.value);
+            }}
+            onBlur={() => setFieldTouched(key)}
+            onPressEnter={this.props.handleSubmit}
+            name={key}
+          />
           <ErrorMessage name="name">{msg => <div>{msg}</div>}</ErrorMessage>
           {this.state.visible && this.state.drawer === key ? (
             <Drawer
