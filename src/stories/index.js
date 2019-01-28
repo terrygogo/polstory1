@@ -21,6 +21,9 @@ const stories = storiesOf("policy", module);
 stories.addDecorator(withKnobs);
 stories.addDecorator(centered);
 stories
+  .add("전송 정책 ", () => {
+    return <AddUser name="Add USer" s />;
+  })
   .add("Data Policy", () => {
     return <FormDataPolicy name="전송정책" />;
   })
@@ -50,9 +53,6 @@ const stories2 = storiesOf("테스트샘플", module);
 stories2.addDecorator(withKnobs);
 stories2.addDecorator(centered);
 stories2
-  .add("추가", () => {
-    return <AddUser name="Add USer" s />;
-  })
   .add("custom input itegrated to form ik", () => {
     const name1 = text("Name", "Arunoda Susiripala");
     const age = number("Age", 89);

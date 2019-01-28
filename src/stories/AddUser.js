@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Card, Button, Row, Col, Modal, Table, Skeleton } from "antd";
 import moment, { relativeTimeRounding } from "moment";
 import UserEntry from "./UserEntry";
-
+import FormDataPolicy from "./FormDataPolicy";
 const dateFormat = "YYYY/MM/DD";
 class AddUser extends Component {
   state = {
@@ -18,19 +18,22 @@ class AddUser extends Component {
       id: 0,
       name: "일반",
       date: moment("2018/01/01", dateFormat).format("YYYY-MM-DD hh:mm"),
-      note: "그냥 자다가 만든것  "
+      note: "그냥 자다가 만든것  ",
+      key: 0
     },
     {
       id: 1,
       name: "테스트",
       date: moment("2018/12/01", dateFormat).format("YYYY-MM-DD hh:mm"),
-      note: "누군가가 보고 있다"
+      note: "누군가가 보고 있다",
+      key: 1
     },
     {
       id: 2,
       name: "보조",
       date: moment("2013/01/21", dateFormat).format("YYYY-MM-DD hh:mm"),
-      note: "나무아미 타불"
+      note: "나무아미 타불",
+      key: 2
     }
   ];
 
@@ -140,64 +143,71 @@ class AddUser extends Component {
     // const { cpu, memory, diskIO, fsStat, network, filesystems } = dog;
 
     return (
-      <Card key="c" title="Data Policy Main" style={{ width: 600 }}>
-        <Row type="flex" justify="end">
-          <Col>
-            <Button
-              onClick={this.handleList}
-              icon="team"
-              style={{ marginBottom: 16 }}
-            >
-              조회
-            </Button>
-          </Col>
-          <Col>
-            <Button
-              onClick={this.handleAdd}
-              icon="user-add"
-              style={{ marginBottom: 16 }}
-            >
-              추가
-            </Button>
-          </Col>
-          <Col>
-            <Button
-              onClick={this.handleDelete}
-              icon="user-delete"
-              style={{ marginBottom: 16 }}
-            >
-              삭제
-            </Button>
-          </Col>
+      <Row gutter={16}>
+        <Col span={12}>
+          <Card key="c" title="Data Policy Main" style={{ width: 600 }}>
+            <Row type="flex" justify="end">
+              <Col>
+                <Button
+                  onClick={this.handleList}
+                  icon="team"
+                  style={{ marginBottom: 16 }}
+                >
+                  조회
+                </Button>
+              </Col>
+              <Col>
+                <Button
+                  onClick={this.handleAdd}
+                  icon="user-add"
+                  style={{ marginBottom: 16 }}
+                >
+                  추가
+                </Button>
+              </Col>
+              <Col>
+                <Button
+                  onClick={this.handleDelete}
+                  icon="user-delete"
+                  style={{ marginBottom: 16 }}
+                >
+                  삭제
+                </Button>
+              </Col>
 
-          <Col>
-            <Button
-              onClick={this.handleEdit}
-              icon="edit"
-              style={{ marginBottom: 16 }}
+              <Col>
+                <Button
+                  onClick={this.handleEdit}
+                  icon="edit"
+                  style={{ marginBottom: 16 }}
+                >
+                  변경
+                </Button>
+              </Col>
+            </Row>
+            <Table
+              columns={this.usercolumn}
+              rowSelection={this.rowSelection}
+              dataSource={this.state.dataman}
+              expandedRowRender={record => (
+                <FormDataPolicy name={record.name} />
+              )}
+              size="small"
+            />
+            <Modal
+              title="Add User"
+              centered={true}
+              visible={this.state.visible}
+              onOk={this.handleOk}
+              onCancel={this.handleCancel}
+              closable={true}
+              footer={<span>JionLab</span>}
             >
-              변경
-            </Button>
-          </Col>
-        </Row>
-        <Table
-          columns={this.usercolumn}
-          rowSelection={this.rowSelection}
-          dataSource={this.state.dataman}
-          size="small"
-        />
-        <Modal
-          title="Add User"
-          centered={true}
-          visible={this.state.visible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-          closable={true}
-          footer={<span>JionLab</span>}
-        >
-          <UserEntry regist={this.handleOk} />
-        </Modal>
-      </Card>
+              <UserEntry regist={this.handleOk} />
+            </Modal>
+          </Card>
+        </Col>
+      </Row>
     );
   }
 }
