@@ -13,7 +13,13 @@ import FormInTransPolicy from "./FormInTransmissionPolicy";
 import FormFileExportPolicy from "./FormFileExportPolicy";
 import AddUser from "./AddUser";
 import { Button } from "antd";
-import { withKnobs, text, boolean, number } from "@storybook/addon-knobs";
+import {
+  withKnobs,
+  text,
+  boolean,
+  number,
+  object
+} from "@storybook/addon-knobs";
 
 const eventsFromNames = action({ onClick: "clicked", onMouseOver: "hovered" });
 
@@ -22,7 +28,12 @@ stories.addDecorator(withKnobs);
 stories.addDecorator(centered);
 stories
   .add("전송 정책 ", () => {
-    return <AddUser name="Add USer" s />;
+    const otherStyles = object("Styles", {
+      border: "2px dashed silver",
+      borderRadius: 10,
+      padding: "10px"
+    });
+    return <AddUser name="Add USer" style={otherStyles} />;
   })
   .add("Data Policy", () => {
     return <FormDataPolicy name="전송정책" />;

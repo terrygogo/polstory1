@@ -3,6 +3,7 @@ import { Card, Button, Row, Col, Modal, Table, Skeleton } from "antd";
 import moment, { relativeTimeRounding } from "moment";
 import UserEntry from "./UserEntry";
 import FormDataPolicy from "./FormDataPolicy";
+var uniqid = require("uniqid");
 const dateFormat = "YYYY/MM/DD";
 class AddUser extends Component {
   state = {
@@ -10,32 +11,80 @@ class AddUser extends Component {
     selected: [],
     deleted: [],
     visiable: false,
-    dataman: []
-  };
+    dataman: [],
 
-  DataPolicyInstance = [
-    {
-      id: 0,
-      name: "일반",
-      date: moment("2018/01/01", dateFormat).format("YYYY-MM-DD hh:mm"),
-      note: "그냥 자다가 만든것  ",
-      key: 0
-    },
-    {
-      id: 1,
-      name: "테스트",
-      date: moment("2018/12/01", dateFormat).format("YYYY-MM-DD hh:mm"),
-      note: "누군가가 보고 있다",
-      key: 1
-    },
-    {
-      id: 2,
-      name: "보조",
-      date: moment("2013/01/21", dateFormat).format("YYYY-MM-DD hh:mm"),
-      note: "나무아미 타불",
-      key: 2
-    }
-  ];
+    DataPolicyInstance: [
+      {
+        id: 0,
+        name: "일반",
+        date: moment("2018/01/01", dateFormat).format("YYYY-MM-DD hh:mm"),
+        note: "그냥 자다가 만든것  ",
+        policy: {
+          datapolicyid: 1,
+          policyname: "지온정책",
+          closingtime: 3,
+          pollingtime: 4,
+          securitylevel: 1,
+          jionupdate: false,
+          systemupdate: 1,
+          userpasswordupdate: 3,
+          pcvaccine: 1,
+          intransmissionpolicy: 1,
+          inreceptionpolicy: 2,
+          outtransmissionpolicy: 1,
+          outreceptionpolicy: 1,
+          company: 1
+        },
+        key: 0
+      },
+      {
+        id: 1,
+        name: "테스트",
+        date: moment("2018/12/01", dateFormat).format("YYYY-MM-DD hh:mm"),
+        note: "누군가가 보고 있다",
+        key: 1,
+        policy: {
+          datapolicyid: 1,
+          policyname: "지온정책",
+          closingtime: 1,
+          pollingtime: 1,
+          securitylevel: 1,
+          jionupdate: false,
+          systemupdate: 1,
+          userpasswordupdate: 1,
+          pcvaccine: 1,
+          intransmissionpolicy: 1,
+          inreceptionpolicy: 1,
+          outtransmissionpolicy: 1,
+          outreceptionpolicy: 1,
+          company: 1
+        }
+      },
+      {
+        id: 2,
+        name: "보조",
+        date: moment("2013/01/21", dateFormat).format("YYYY-MM-DD hh:mm"),
+        note: "나무아미 타불",
+        key: 2,
+        policy: {
+          datapolicyid: 2,
+          policyname: "지온정책",
+          closingtime: 2,
+          pollingtime: 2,
+          securitylevel: 2,
+          jionupdate: false,
+          systemupdate: 2,
+          userpasswordupdate: 2,
+          pcvaccine: 2,
+          intransmissionpolicy: 2,
+          inreceptionpolicy: 2,
+          outtransmissionpolicy: 2,
+          outreceptionpolicy: 2,
+          company: 2
+        }
+      }
+    ]
+  };
 
   usercolumn = [
     {
@@ -92,9 +141,32 @@ class AddUser extends Component {
     this.setState({ activeKey: my });
   };
   handleAdd = () => {
-    this.setState({
-      visible: true
-    });
+    const newelement = {
+      id: uniqid("maninpolicy-"),
+      name: "새거",
+      date: moment("2013/01/21", dateFormat).format("YYYY-MM-DD hh:mm"),
+      note: "나무아미 타불ㅇㅇㅇㅇㅇ",
+      key: uniqid("maninpolicy-"),
+      policy: {
+        datapolicyid: 2,
+        policyname: "지온정책",
+        closingtime: 2,
+        pollingtime: 2,
+        securitylevel: 2,
+        jionupdate: false,
+        systemupdate: 2,
+        userpasswordupdate: 2,
+        pcvaccine: 2,
+        intransmissionpolicy: 2,
+        inreceptionpolicy: 2,
+        outtransmissionpolicy: 2,
+        outreceptionpolicy: 2,
+        company: 2
+      }
+    };
+    this.setState(prevState => ({
+      DataPolicyInstance: [...prevState.DataPolicyInstance, newelement]
+    }));
   };
 
   handleDelete = () => {
@@ -124,10 +196,8 @@ class AddUser extends Component {
     });
   };
 
-
-
   componentDidMount = () => {
-    this.setState({ dataman: this.DataPolicyInstance });
+    this.setState({ dataman: this.state.DataPolicyInstance });
     moment.locale("kr");
   };
   // Normally you would want to split things out into separate components.
@@ -140,7 +210,11 @@ class AddUser extends Component {
     return (
       <Row gutter={16}>
         <Col span={12}>
-          <Card key="c" title="Policy Main" style={{ width: 600 }}>
+          <Card
+            key="c"
+            title="Policy Main"
+            style={{ width: 600, ...this.props.style }}
+          >
             <Row type="flex" justify="end">
               <Col>
                 <Button
@@ -183,7 +257,7 @@ class AddUser extends Component {
             <Table
               columns={this.usercolumn}
               rowSelection={this.rowSelection}
-              dataSource={this.state.dataman}
+              dataSource={this.state.DataPolicyInstance}
               expandedRowRender={record => (
                 <FormDataPolicy name={record.name} />
               )}
@@ -200,6 +274,15 @@ class AddUser extends Component {
             >
               <UserEntry regist={this.handleOk} />
             </Modal>
+          </Card>
+        </Col>
+        <Col span={12}>
+          <Card
+            key="c"
+            title="Policy Main"
+            style={{ width: 600, ...this.props.style }}
+          >
+            <FormDataPolicy name="man" />
           </Card>
         </Col>
       </Row>
