@@ -124,12 +124,7 @@ class AddUser extends Component {
     });
   };
 
-  deleteUser = async user => {
-    console.log(response);
-  };
-  updateUser = async user => {
-    console.log(response);
-  };
+
 
   componentDidMount = () => {
     this.setState({ dataman: this.DataPolicyInstance });
@@ -145,7 +140,7 @@ class AddUser extends Component {
     return (
       <Row gutter={16}>
         <Col span={12}>
-          <Card key="c" title="Data Policy Main" style={{ width: 600 }}>
+          <Card key="c" title="Policy Main" style={{ width: 600 }}>
             <Row type="flex" justify="end">
               <Col>
                 <Button
