@@ -29,9 +29,8 @@ stories.addDecorator(centered);
 stories
   .add("전송 정책 ", () => {
     const otherStyles = object("Styles", {
-      border: "2px dashed silver",
       borderRadius: 10,
-      padding: "10px"
+      padding: "0px"
     });
     return <AddUser name="Add USer" style={otherStyles} />;
   })

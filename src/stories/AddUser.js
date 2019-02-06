@@ -3,21 +3,27 @@ import { Card, Button, Row, Col, Modal, Table, Skeleton } from "antd";
 import moment, { relativeTimeRounding } from "moment";
 import UserEntry from "./UserEntry";
 import FormDataPolicy from "./FormDataPolicy";
+import "./AddUser.css";
+// import { radios } from "@storybook/addon-knobs";
+// import { RowSelectionType } from "antd/lib/table";
+
 var uniqid = require("uniqid");
 const dateFormat = "YYYY/MM/DD";
 class AddUser extends Component {
   state = {
+    activerow: 0,
     users: [],
-    selected: [],
+    selected: [{ id: 0 }],
     deleted: [],
     visiable: false,
     dataman: [],
+    selectedRowKeys: [0],
 
     DataPolicyInstance: [
       {
         id: 0,
         name: "일반",
-        date: moment("2018/01/01", dateFormat).format("YYYY-MM-DD hh:mm"),
+        date: moment("2018/01/01", dateFormat).format("YYYY-DD-MM hh:mm"),
         note: "그냥 자다가 만든것  ",
         policy: {
           datapolicyid: 1,
@@ -40,7 +46,7 @@ class AddUser extends Component {
       {
         id: 1,
         name: "테스트",
-        date: moment("2018/12/01", dateFormat).format("YYYY-MM-DD hh:mm"),
+        date: moment("2018/12/01", dateFormat).format("YYYY-DD-MM hh:mm"),
         note: "누군가가 보고 있다",
         key: 1,
         policy: {
@@ -63,7 +69,7 @@ class AddUser extends Component {
       {
         id: 2,
         name: "보조",
-        date: moment("2013/01/21", dateFormat).format("YYYY-MM-DD hh:mm"),
+        date: moment("2013/01/21", dateFormat).format("YYYY-DD-MM hh:mm"),
         note: "나무아미 타불",
         key: 2,
         policy: {
@@ -113,25 +119,6 @@ class AddUser extends Component {
    * the IDs of the droppable container to the names of the
    * source arrays stored in the state.
    */
-  rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      /*
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        "selectedRows: ",
-        selectedRows
-      );
-      */
-    },
-    onSelect: (record, selected, selectedRows) => {
-      let haba = JSON.parse(JSON.stringify(selectedRows));
-      this.setState({ selected: haba });
-      console.log(selectedRows);
-    },
-    onSelectAll: (selected, selectedRows, changeRows) => {
-      // console.log(selected, selectedRows, changeRows);
-    }
-  };
   getList = id => this.state[this.id2List[id]];
 
   onDragEnd = result => {};
@@ -144,7 +131,7 @@ class AddUser extends Component {
     const newelement = {
       id: uniqid("maninpolicy-"),
       name: "새거",
-      date: moment("2013/01/21", dateFormat).format("YYYY-MM-DD hh:mm"),
+      date: moment("2013/01/21", dateFormat),
       note: "나무아미 타불ㅇㅇㅇㅇㅇ",
       key: uniqid("maninpolicy-"),
       policy: {
@@ -173,8 +160,9 @@ class AddUser extends Component {
     this.state.selected.map(inx => this.deleteUser(inx.email));
   };
   handleList = () => {
-    this.fetchImages();
-    console.log(this.state.dataman);
+    let newSelectedRowKeys = [];
+    newSelectedRowKeys.push(2);
+    this.setState({ selectedRowKeys: newSelectedRowKeys });
   };
   handleEdit = () => {
     this.setState({
@@ -198,7 +186,10 @@ class AddUser extends Component {
 
   componentDidMount = () => {
     this.setState({ dataman: this.state.DataPolicyInstance });
-    moment.locale("kr");
+    let newSelectedRowKeys = [];
+    newSelectedRowKeys.push(0);
+    //this.setState({ selectedRowKeys: newSelectedRowKeys });
+    // moment.locale("kr");
   };
   // Normally you would want to split things out into separate components.
   // But in this example everything is just done in one place for simplicity
@@ -207,14 +198,35 @@ class AddUser extends Component {
     const { fetching, dog, error } = this.props;
     // const { cpu, memory, diskIO, fsStat, network, filesystems } = dog;
 
+    const { selectedRowKeys } = this.state;
+    const rowSelection = {
+      type: "radio",
+      selectedRowKeys,
+      onChange: (selectedRowKeys, selectedRows) => {
+        this.setState({ selectedRowKeys });
+        /*
+        console.log(
+          `selectedRowKeys: ${selectedRowKeys}`,
+          "selectedRows: ",
+          selectedRows
+        );
+        */
+      },
+      onSelect: (record, selected, selectedRows) => {
+        let haba = JSON.parse(JSON.stringify(selectedRows));
+        this.setState({ selected: haba });
+        this.setState({ activerow: haba[0].id });
+
+        console.log(selectedRows);
+      },
+      onSelectAll: (selected, selectedRows, changeRows) => {
+        // console.log(selected, selectedRows, changeRows);
+      }
+    };
     return (
-      <Row gutter={16}>
+      <Row>
         <Col span={12}>
-          <Card
-            key="c"
-            title="Policy Main"
-            style={{ width: 600, ...this.props.style }}
-          >
+          <Card key="c" title="Policy Main" style={{ ...this.props.style }}>
             <Row type="flex" justify="end">
               <Col>
                 <Button
@@ -256,35 +268,32 @@ class AddUser extends Component {
             </Row>
             <Table
               columns={this.usercolumn}
-              rowSelection={this.rowSelection}
+              rowClassName={(record, index) => {
+                if (index === this.state.activerow) return "active-row";
+              }}
+              rowSelection={rowSelection}
               dataSource={this.state.DataPolicyInstance}
-              expandedRowRender={record => (
-                <FormDataPolicy name={record.name} />
-              )}
               size="small"
             />
-            <Modal
-              title="Add User"
-              centered={true}
-              visible={this.state.visible}
-              onOk={this.handleOk}
-              onCancel={this.handleCancel}
-              closable={true}
-              footer={<span>JionLab</span>}
-            >
-              <UserEntry regist={this.handleOk} />
-            </Modal>
           </Card>
         </Col>
         <Col span={12}>
-          <Card
-            key="c"
-            title="Policy Main"
-            style={{ width: 600, ...this.props.style }}
-          >
-            <FormDataPolicy name="man" />
-          </Card>
+          <FormDataPolicy
+            name={this.state.selected[0].note}
+            values={this.state.selected[0].policy}
+          />
         </Col>
+        <Modal
+          title="Add User"
+          centered={true}
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+          closable={true}
+          footer={<span>JionLab</span>}
+        >
+          <UserEntry regist={this.handleOk} />
+        </Modal>
       </Row>
     );
   }

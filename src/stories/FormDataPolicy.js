@@ -269,7 +269,7 @@ const DataPolicySchema = {
   }
 };
 
-const dateFormat = "YYYY/MM/DD";
+const dateFormat = "YYYY-MM-DD";
 
 const DataPolicyFileds = {
   intransmissionpolicymeta: [
@@ -618,20 +618,7 @@ class MyFormM extends React.Component {
 
 const MyEnhancedForm = withFormik({
   mapPropsToValues: props => ({
-    datapolicyid: 1,
-    policyname: "지온정책",
-    closingtime: 3,
-    pollingtime: 4,
-    securitylevel: 1,
-    jionupdate: false,
-    systemupdate: 1,
-    userpasswordupdate: 3,
-    pcvaccine: 1,
-    intransmissionpolicy: 1,
-    inreceptionpolicy: 2,
-    outtransmissionpolicy: 1,
-    outreceptionpolicy: 1,
-    company: 1
+    values: props.values
   }),
 
   // Custom sync validation

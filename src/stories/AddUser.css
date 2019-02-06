@@ -1,0 +1,7 @@
+.data-row {
+  background: rgb(133, 59, 59);
+}
+
+.active-row {
+  font-weight: bold;
+}

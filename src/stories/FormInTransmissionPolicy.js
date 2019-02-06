@@ -160,7 +160,7 @@ const InTransPolicySchema = {
     label: "메일반출 세부정책"
   }
 };
-
+const dateFormat = "YYYY/MM/DD";
 const InTransPolicyFileds = {
   infilespolicymeta: [
     {
@@ -538,7 +538,6 @@ class MyFormM extends React.Component {
   }
 }
 
-const dateFormat = "YYYY/MM/DD";
 const MyEnhancedForm = withFormik({
   mapPropsToValues: props => ({
     intransid: 1,
