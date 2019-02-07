@@ -13,7 +13,31 @@ class AddUser extends Component {
   state = {
     activerow: 0,
     users: [],
-    selected: [{ id: 0 }],
+    selected: [
+      {
+        id: 0,
+        name: "일반",
+        date: moment("2018/01/01", dateFormat).format("YYYY-DD-MM hh:mm"),
+        note: "그냥 자다가 만든것  ",
+        policy: {
+          datapolicyid: 1,
+          policyname: "지온정책",
+          closingtime: 1,
+          pollingtime: 1,
+          securitylevel: 1,
+          jionupdate: false,
+          systemupdate: 1,
+          userpasswordupdate: 1,
+          pcvaccine: 1,
+          intransmissionpolicy: 1,
+          inreceptionpolicy: 1,
+          outtransmissionpolicy: 1,
+          outreceptionpolicy: 1,
+          company: 1
+        },
+        key: 0
+      }
+    ],
     deleted: [],
     visiable: false,
     dataman: [],
@@ -28,15 +52,15 @@ class AddUser extends Component {
         policy: {
           datapolicyid: 1,
           policyname: "지온정책",
-          closingtime: 3,
+          closingtime: 1,
           pollingtime: 4,
           securitylevel: 1,
           jionupdate: false,
           systemupdate: 1,
-          userpasswordupdate: 3,
+          userpasswordupdate: 1,
           pcvaccine: 1,
           intransmissionpolicy: 1,
-          inreceptionpolicy: 2,
+          inreceptionpolicy: 1,
           outtransmissionpolicy: 1,
           outreceptionpolicy: 1,
           company: 1
@@ -50,13 +74,13 @@ class AddUser extends Component {
         note: "누군가가 보고 있다",
         key: 1,
         policy: {
-          datapolicyid: 1,
+          datapolicyid: 2,
           policyname: "지온정책",
-          closingtime: 1,
-          pollingtime: 1,
-          securitylevel: 1,
+          closingtime: 2,
+          pollingtime: 2,
+          securitylevel: 2,
           jionupdate: false,
-          systemupdate: 1,
+          systemupdate: 2,
           userpasswordupdate: 1,
           pcvaccine: 1,
           intransmissionpolicy: 1,
@@ -185,17 +209,16 @@ class AddUser extends Component {
   };
 
   componentDidMount = () => {
-    this.setState({ dataman: this.state.DataPolicyInstance });
     let newSelectedRowKeys = [];
-    newSelectedRowKeys.push(0);
-    //this.setState({ selectedRowKeys: newSelectedRowKeys });
+    newSelectedRowKeys.push(this.state.DataPolicyInstance[0]);
+    this.setState({ selected: newSelectedRowKeys });
     // moment.locale("kr");
   };
   // Normally you would want to split things out into separate components.
   // But in this example everything is just done in one place for simplicity
   render() {
     //if (this.props.dog === null) return <Skeleton />;
-    const { fetching, dog, error } = this.props;
+
     // const { cpu, memory, diskIO, fsStat, network, filesystems } = dog;
 
     const { selectedRowKeys } = this.state;
@@ -225,64 +248,77 @@ class AddUser extends Component {
     };
     return (
       <Row>
-        <Col span={12}>
-          <Card key="c" title="Policy Main" style={{ ...this.props.style }}>
-            <Row type="flex" justify="end">
-              <Col>
-                <Button
-                  onClick={this.handleList}
-                  icon="team"
-                  style={{ marginBottom: 16 }}
-                >
-                  조회
-                </Button>
-              </Col>
-              <Col>
-                <Button
-                  onClick={this.handleAdd}
-                  icon="user-add"
-                  style={{ marginBottom: 16 }}
-                >
-                  추가
-                </Button>
-              </Col>
-              <Col>
-                <Button
-                  onClick={this.handleDelete}
-                  icon="user-delete"
-                  style={{ marginBottom: 16 }}
-                >
-                  삭제
-                </Button>
-              </Col>
+        <Card
+          key="c"
+          title="Policy Main"
+          style={{ width: "100%", ...this.props.style }}
+        >
+          <Row gutter={36}>
+            <Col span={12}>
+              <Row type="flex" justify="end">
+                <Col>
+                  <Button
+                    onClick={this.handleList}
+                    icon="team"
+                    style={{ marginBottom: 16 }}
+                  >
+                    조회
+                  </Button>
+                </Col>
+                <Col>
+                  <Button
+                    onClick={this.handleAdd}
+                    icon="user-add"
+                    style={{ marginBottom: 16 }}
+                  >
+                    추가
+                  </Button>
+                </Col>
+                <Col>
+                  <Button
+                    onClick={this.handleDelete}
+                    icon="user-delete"
+                    style={{ marginBottom: 16 }}
+                  >
+                    삭제
+                  </Button>
+                </Col>
 
-              <Col>
-                <Button
-                  onClick={this.handleEdit}
-                  icon="edit"
-                  style={{ marginBottom: 16 }}
-                >
-                  변경
-                </Button>
-              </Col>
-            </Row>
-            <Table
-              columns={this.usercolumn}
-              rowClassName={(record, index) => {
-                if (index === this.state.activerow) return "active-row";
-              }}
-              rowSelection={rowSelection}
-              dataSource={this.state.DataPolicyInstance}
-              size="small"
-            />
-          </Card>
-        </Col>
-        <Col span={12}>
-          <FormDataPolicy
-            name={this.state.selected[0].note}
-            values={this.state.selected[0].policy}
-          />
-        </Col>
+                <Col>
+                  <Button
+                    onClick={this.handleEdit}
+                    icon="edit"
+                    style={{ marginBottom: 16 }}
+                  >
+                    변경
+                  </Button>
+                </Col>
+              </Row>
+              <Table
+                columns={this.usercolumn}
+                rowClassName={(record, index) => {
+                  if (index === this.state.activerow) return "active-row";
+                }}
+                rowSelection={rowSelection}
+                dataSource={this.state.DataPolicyInstance}
+                size="small"
+              />
+            </Col>
+
+            <Col span={12}>
+              <FormDataPolicy
+                name={
+                  this.state.selected[0].name +
+                  " / " +
+                  this.state.selected[0].note
+                }
+                policy={this.state.selected[0].policy}
+                desc={"last updated :" + this.state.selected[0].date}
+              />
+            </Col>
+          </Row>
+        </Card>
+
         <Modal
           title="Add User"
           centered={true}

@@ -516,7 +516,7 @@ class MyFormM extends React.Component {
             size="small"
             title={name}
             extra={<a href="#">More</a>}
-            style={{ width: 600 }}
+            style={{ width: 480 }}
           >
             <Form onSubmit={handleSubmit} type="flex">
               {Object.keys(InTransPolicySchema).map((oneKey, i) => {

@@ -23,10 +23,11 @@ import {
   Card,
   Button
 } from "antd";
-import { AST_ObjectSetter } from "terser";
-import { object } from "@storybook/addon-knobs";
+import { Avatar } from "antd";
 
 import FormInTransPolicy from "./FormInTransmissionPolicy";
+
+const { Meta } = Card;
 
 const Option = Select.Option;
 const Panel = Collapse.Panel;
@@ -559,7 +560,7 @@ class MyFormM extends React.Component {
           <ErrorMessage name="name">{msg => <div>{msg}</div>}</ErrorMessage>
           {this.state.visible && this.state.drawer === key ? (
             <Drawer
-              width={680}
+              width={480}
               title={objs.label}
               placement="right"
               closable={false}
@@ -584,43 +585,73 @@ class MyFormM extends React.Component {
       handleSubmit,
       setFieldValue,
       setFieldTouched,
-      name
+      name,
+      desc
     } = this.props;
 
     return (
-      <Row type="flex">
-        <Col span={24}>
-          <Card
-            size="small"
-            title={name}
-            extra={<a href="#">More</a>}
-            style={{ width: 600 }}
-          >
-            <Form onSubmit={handleSubmit} type="flex">
-              {Object.keys(DataPolicySchema).map((oneKey, i) => {
-                return this.buildFormEntries(
-                  oneKey,
-                  DataPolicySchema[oneKey],
-                  setFieldValue,
-                  setFieldTouched
-                );
-              })}
-              <Form.Item {...formItemLayout}>
-                <Button htmlType="submit">Submit</Button>
-              </Form.Item>
-            </Form>
-          </Card>
-        </Col>
-      </Row>
+      <Card
+        size="small"
+        title="전송정책"
+        style={{
+          width: 500,
+          background: "#ECECEC"
+        }}
+        extra={
+          <Row type="flex" justify="end">
+            <Button
+              onClick={this.handleList}
+              icon="team"
+              style={{ marginBottom: 16 }}
+            >
+              되돌리기
+            </Button>
+          </Row>
+        }
+      >
+        <Meta
+          title={name}
+          description={desc}
+          style={{
+            padding: "0px 0px 20px 0px"
+          }}
+        />
+        <Form onSubmit={handleSubmit} type="flex">
+          {Object.keys(DataPolicySchema).map((oneKey, i) => {
+            return this.buildFormEntries(
+              oneKey,
+              DataPolicySchema[oneKey],
+              setFieldValue,
+              setFieldTouched
+            );
+          })}
+          <Form.Item {...formItemLayout}>
+            <Button htmlType="submit">Submit</Button>
+          </Form.Item>
+        </Form>
+      </Card>
     );
   }
 }
 
 const MyEnhancedForm = withFormik({
   mapPropsToValues: props => ({
-    values: props.values
+    datapolicyid: 1,
+    policyname: "지온정책",
+    closingtime: props.policy.closingtime,
+    pollingtime: props.policy.pollingtime,
+    securitylevel: 1,
+    jionupdate: false,
+    systemupdate: 1,
+    userpasswordupdate: props.policy.userpasswordupdate,
+    pcvaccine: 1,
+    intransmissionpolicy: 1,
+    inreceptionpolicy: 2,
+    outtransmissionpolicy: 1,
+    outreceptionpolicy: 1,
+    company: 1
   }),
-
+  enableReinitialize: true,
   // Custom sync validation
   validate: values => {
     const errors = {};
