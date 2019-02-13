@@ -254,7 +254,7 @@ class AddUser extends Component {
           style={{ width: "100%", ...this.props.style }}
         >
           <Row gutter={36}>
-            <Col span={12}>
+            <Col span={24}>
               <Row type="flex" justify="end">
                 <Col>
                   <Button
@@ -302,6 +302,11 @@ class AddUser extends Component {
                 rowSelection={rowSelection}
                 dataSource={this.state.DataPolicyInstance}
                 size="small"
+                onRow={record => ({
+                  onClick: () => {
+                    this.selectRow(record);
+                  }
+                })}
               />
             </Col>
 

@@ -12,6 +12,7 @@ import FormDataPolicy from "./FormDataPolicy";
 import FormInTransPolicy from "./FormInTransmissionPolicy";
 import FormFileExportPolicy from "./FormFileExportPolicy";
 import AddUser from "./AddUser";
+import PolicyPane from "./PolicyPane";
 import { Button } from "antd";
 import {
   withKnobs,
@@ -25,8 +26,15 @@ const eventsFromNames = action({ onClick: "clicked", onMouseOver: "hovered" });
 
 const stories = storiesOf("policy", module);
 stories.addDecorator(withKnobs);
-stories.addDecorator(centered);
+// stories.addDecorator(centered);
 stories
+  .add("정책 주메뉴", () => {
+    const otherStyles = object("Styles", {
+      borderRadius: 10,
+      padding: "0px"
+    });
+    return <PolicyPane name="Add USer" style={otherStyles} />;
+  })
   .add("전송 정책 ", () => {
     const otherStyles = object("Styles", {
       borderRadius: 10,

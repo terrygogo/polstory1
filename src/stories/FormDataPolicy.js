@@ -26,7 +26,7 @@ import {
 import { Avatar } from "antd";
 
 import FormInTransPolicy from "./FormInTransmissionPolicy";
-
+import genFormPolicy from "./GenFormPolicy";
 const { Meta } = Card;
 
 const Option = Select.Option;
