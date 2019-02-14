@@ -14,54 +14,94 @@ import {
 import UserEntry from "./UserEntry";
 
 import "./AddUser.css";
-import AddUser from "./AddUser";
+ 
 // import { radios } from "@storybook/addon-knobs";
 // import { RowSelectionType } from "antd/lib/table";
+import FormDataPolicy from "./FormDataPolicy";
+import FormInTransPolicy from "./FormInTransmissionPolicy";
+import FormFileExportPolicy from "./FormFileExportPolicy";
+import AddUser from "./AddUser";
 const TabPane = Tabs.TabPane;
 const Panel = Collapse.Panel;
 
 const { TreeNode } = Tree;
 const treeData = [
   {
-    title: "0-0",
-    key: "0-0",
+    title: "망연계 전송정책",
+    key: "top",
     children: [
       {
-        title: "0-0-0",
-        key: "0-0-0",
-        children: [
-          { title: "0-0-0-0", key: "0-0-0-0" },
-          { title: "0-0-0-1", key: "0-0-0-1" },
-          { title: "0-0-0-2", key: "0-0-0-2" }
-        ]
+        title: "일반",
+        key: "top1"
       },
       {
-        title: "0-0-1",
-        key: "0-0-1",
+        title: "세부정책",
+        key: "sub1",
         children: [
-          { title: "0-0-1-0", key: "0-0-1-0" },
-          { title: "0-0-1-1", key: "0-0-1-1" },
-          { title: "0-0-1-2", key: "0-0-1-2" }
+          {
+            title: "내부망 반출정책",
+            key: "sub11",
+            children: [
+              { title: "일반", key: "top11" },
+              {
+                title: "세부정책",
+                key: "sub111",
+                children: [
+                  { title: "파일전송", key: "top111" },
+                  { title: "외부서비스연계", key: "top112" },
+                  { title: "승인절차", key: "top113" },
+                  { title: "클립보드", key: "top114" },
+                  { title: "URL연계", key: "0top115" },
+                  { title: "내부메일반출", key: "top116" }
+                ]
+              }
+            ]
+          },
+          {
+            title: "내부망 반입정책",
+            key: "sub12",
+            children: [
+              { title: "일반", key: "top12" },
+              {
+                title: "세부정책",
+                key: "sub121",
+                children: [{ title: "내부망수신 메일정책", key: "top121" }]
+              }
+            ]
+          },
+          {
+            title: "외부망 반출정책",
+            key: "sub21",
+            children: [
+              { title: "일반", key: "top21" },
+              {
+                title: "세부정책",
+                key: "sub211",
+                children: [
+                  { title: "파일반입", key: "top211" },
+                  { title: "외부서비스 연계", key: "top212" },
+                  { title: "승인절차", key: "top213" },
+                  { title: "클립보드반입", key: "top214" },
+                  { title: "메일반입", key: "top215" }
+                ]
+              }
+            ]
+          },
+          {
+            title: "내부망 반입정책",
+            key: "sub22",
+            children: [
+              { title: "일반", key: "top22" },
+              {
+                title: "세부정책",
+                key: "sub221",
+                children: [{ title: "내부망수신 메일정책", key: "top221" }]
+              }
+            ]
+          }
         ]
-      },
-      {
-        title: "0-0-2",
-        key: "0-0-2"
       }
     ]
-  },
-  {
-    title: "0-1",
-    key: "0-1",
-    children: [
-      { title: "0-1-0-0", key: "0-1-0-0" },
-      { title: "0-1-0-1", key: "0-1-0-1" },
-      { title: "0-1-0-2", key: "0-1-0-2" }
-    ]
-  },
-  {
-    title: "0-2",
-    key: "0-2"
   }
 ];
 
@@ -70,7 +110,7 @@ class PolicyPane extends Component {
     expandedKeys: ["0-0-0", "0-0-1"],
     autoExpandParent: true,
 
-    selectedKeys: ["0-0-0"]
+    selectedKeys: ["top1"]
   };
 
   onExpand = expandedKeys => {
@@ -89,39 +129,63 @@ class PolicyPane extends Component {
   };
 
   onSelect = (selectedKeys, info) => {
+    var vv = "";
+    vv = selectedKeys[0];
     console.log("onSelect", info);
-    this.setState({ selectedKeys });
+    console.log("onSelecti", selectedKeys);
+    if (!vv.startsWith("sub")) this.setState({ selectedKeys });
   };
 
   renderTreeNodes = data =>
     data.map(item => {
+      var kk = "normal";
+      if (item.title === "세부정책") kk = "lighter";
       if (item.children) {
         return (
-          <TreeNode title={item.title} key={item.key} dataRef={item}>
+          <TreeNode
+            title={item.title}
+            key={item.key}
+            dataRef={item}
+            style={{
+              fontWeight: kk
+            }}
+          >
             {this.renderTreeNodes(item.children)}
           </TreeNode>
         );
       }
-      return <TreeNode {...item} />;
+      return (
+        <TreeNode
+          {...item}
+          style={{
+            fontWeight: kk
+          }}
+        />
+      );
     });
 
   render() {
     return (
-      <Tree
-        showIcon
-        defaultExpandAll
-        switcherIcon={<Icon type="down" />}
-        onExpand={this.onExpand}
-        expandedKeys={this.state.expandedKeys}
-        autoExpandParent={this.state.autoExpandParent}
-        onCheck={this.onCheck}
-        checkedKeys={this.state.checkedKeys}
-        onSelect={this.onSelect}
-        selectedKeys={this.state.selectedKeys}
-        defaultSelectedKeys={["0-0-0"]}
-      >
-        {this.renderTreeNodes(treeData)}
-      </Tree>
+      <Row>
+        <Col span={4}>
+         
+          <Tree
+            showLine
+            defaultExpandAll
+            onExpand={this.onExpand}
+            expandedKeys={this.state.expandedKeys}
+            autoExpandParent={this.state.autoExpandParent}
+            onSelect={this.onSelect}
+            selectedKeys={this.state.selectedKeys}
+            defaultSelectedKeys={["0-0-0"]}
+          >
+            {this.renderTreeNodes(treeData)}
+          </Tree>
+        </Col>
+          <Col span={20}>
+          <AddUser />
+        </Col>
+      </Row>
     );
   }
 }
