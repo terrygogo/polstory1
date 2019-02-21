@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Button, Row, Col, Modal, Table, Skeleton } from "antd";
+import { Card, Button, Row, Col, Modal, Table, Popover } from "antd";
 import moment, { relativeTimeRounding } from "moment";
 import UserEntry from "./UserEntry";
 import FormDataPolicy from "./FormDataPolicy";
@@ -9,6 +9,7 @@ import "./AddUser.css";
 
 var uniqid = require("uniqid");
 const dateFormat = "YYYY/MM/DD";
+
 class AddUser extends Component {
   state = {
     activerow: 0,
@@ -120,7 +121,8 @@ class AddUser extends Component {
     {
       title: "ID",
       dataIndex: "id",
-      key: "id"
+      key: "id",
+      hideOnSmall: true
     },
     {
       title: "name",
@@ -130,12 +132,22 @@ class AddUser extends Component {
     {
       title: "date",
       dataIndex: "date",
-      key: "date"
+      key: "date",
+      render: (text, row, index) => {
+        console.log(text, row, index);
+        return (
+          <Popover content={row.note} placement="right">
+            <Button type="primary">{text}</Button>
+          </Popover>
+        );
+      }
     },
     {
       title: "note",
       dataIndex: "note",
-      key: "note"
+      key: "note",
+      hideOnSmall: true,
+      render: (text, row, index) => {}
     }
   ];
   /**
@@ -145,6 +157,10 @@ class AddUser extends Component {
    */
   getList = id => this.state[this.id2List[id]];
 
+  getResponsiveColumns = smallScreen =>
+    this.usercolumn.filter(
+      ({ hideOnSmall = false }) => !(smallScreen && hideOnSmall)
+    );
   onDragEnd = result => {};
 
   onChange = activeKey => {};
@@ -250,11 +266,12 @@ class AddUser extends Component {
       <Row>
         <Card
           key="c"
+          className="babababa"
           title="Policy Main"
           style={{ width: "100%", ...this.props.style }}
         >
           <Row gutter={36}>
-            <Col span={24}>
+            <Col xs={24} sm={24} md={12} lg={8} xl={8}>
               <Row type="flex" justify="end">
                 <Col>
                   <Button
@@ -295,7 +312,7 @@ class AddUser extends Component {
                 </Col>
               </Row>
               <Table
-                columns={this.usercolumn}
+                columns={this.getResponsiveColumns(true)}
                 rowClassName={(record, index) => {
                   if (index === this.state.activerow) return "active-row";
                 }}
@@ -305,12 +322,15 @@ class AddUser extends Component {
                 onRow={record => ({
                   onClick: () => {
                     this.selectRow(record);
+                  },
+                  onMouseEnter: () => {
+                    console.log(record);
                   }
                 })}
               />
             </Col>
 
-            <Col span={12}>
+            <Col xs={24} sm={24} md={12} lg={16} xl={16}>
               <FormDataPolicy
                 name={
                   this.state.selected[0].name +

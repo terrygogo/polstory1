@@ -14,7 +14,7 @@ import {
 import UserEntry from "./UserEntry";
 
 import "./AddUser.css";
- 
+
 // import { radios } from "@storybook/addon-knobs";
 // import { RowSelectionType } from "antd/lib/table";
 import FormDataPolicy from "./FormDataPolicy";
@@ -23,6 +23,12 @@ import FormFileExportPolicy from "./FormFileExportPolicy";
 import AddUser from "./AddUser";
 const TabPane = Tabs.TabPane;
 const Panel = Collapse.Panel;
+
+const components = {
+  main: AddUser,
+  sub1: FormInTransPolicy,
+  sub2: FormFileExportPolicy
+};
 
 const { TreeNode } = Tree;
 const treeData = [
@@ -105,9 +111,29 @@ const treeData = [
   }
 ];
 
+
+function Story(mimi) {
+  // Correct! JSX type can be a capitalized variable.
+  let SpecificStory = null;
+  switch (mimi) {
+    case "top1":
+      SpecificStory = components.main;
+      break;
+    case "top11":
+      SpecificStory = components.sub1;
+      break;
+    case "top12":
+      SpecificStory = components.sub2;
+      break;
+    default:
+      SpecificStory = components.main;
+  }
+  return <SpecificStory />;
+}
+
 class PolicyPane extends Component {
   state = {
-    expandedKeys: ["0-0-0", "0-0-1"],
+    expandedKeys: ["top1", "sub1"],
     autoExpandParent: true,
 
     selectedKeys: ["top1"]
@@ -167,23 +193,22 @@ class PolicyPane extends Component {
   render() {
     return (
       <Row>
-        <Col span={4}>
-         
+        <Col xs={24} sm={6} md={6} lg={4} xl={4}>
           <Tree
             showLine
-            defaultExpandAll
+            defaultExpandAll={true}
             onExpand={this.onExpand}
             expandedKeys={this.state.expandedKeys}
             autoExpandParent={this.state.autoExpandParent}
             onSelect={this.onSelect}
             selectedKeys={this.state.selectedKeys}
-            defaultSelectedKeys={["0-0-0"]}
+            defaultSelectedKeys={["top1"]}
           >
             {this.renderTreeNodes(treeData)}
           </Tree>
         </Col>
-          <Col span={20}>
-          <AddUser />
+        <Col xs={24} sm={18} md={18} lg={20} xl={20}>
+          {Story(this.state.selectedKeys[0])}
         </Col>
       </Row>
     );

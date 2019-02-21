@@ -2,6 +2,19 @@
   background: rgb(133, 59, 59);
 }
 
+
 .active-row {
   font-weight: bold;
 }
+
+.babababa .ant-table {
+  font-size: 12px;
+}
+.babababa .ant-btn {
+  font-size: 12px;
+}
+/*
+.babababa .ant-card-head{
+  font-size: 8px;
+}
+*/

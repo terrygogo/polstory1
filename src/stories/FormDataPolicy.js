@@ -450,129 +450,137 @@ class MyFormM extends React.Component {
   buildFormEntries = (key, objs, setFieldValue, setFieldTouched) => {
     if (objs.type === "string")
       return (
-        <Form.Item
-          {...formItemLayout}
-          key={key}
-          label={objs.label}
-          help={objs.help_text}
-        >
-          <Input
-            placeholder="Basic usage"
-            value={this.props.values[key]}
-            onChange={event => {
-              setFieldValue(key, event.target.value);
-            }}
-            onBlur={() => setFieldTouched(key)}
-            onPressEnter={this.props.handleSubmit}
-            name={key}
-            disabled={objs.read_only}
-          />
-          <ErrorMessage name="name">{msg => <div>{msg}</div>}</ErrorMessage>
-        </Form.Item>
+        <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+          <Form.Item
+            {...formItemLayout}
+            key={key}
+            label={objs.label}
+            help={objs.help_text}
+          >
+            <Input
+              placeholder="Basic usage"
+              value={this.props.values[key]}
+              onChange={event => {
+                setFieldValue(key, event.target.value);
+              }}
+              onBlur={() => setFieldTouched(key)}
+              onPressEnter={this.props.handleSubmit}
+              name={key}
+              disabled={objs.read_only}
+            />
+            <ErrorMessage name="name">{msg => <div>{msg}</div>}</ErrorMessage>
+          </Form.Item>
+        </Col>
       );
     else if (objs.type === "choice")
       return (
-        <Form.Item
-          {...formItemLayout}
-          key={key}
-          label={objs.label}
-          help={objs.help_text}
-        >
-          <Select
-            defaultValue="Lucy"
-            value={this.props.values[key]}
-            onChange={event => {
-              setFieldValue(key, event);
-            }}
-            onBlur={() => setFieldTouched(key)}
-            name={key}
+        <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+          <Form.Item
+            {...formItemLayout}
+            key={key}
+            label={objs.label}
+            help={objs.help_text}
           >
-            {objs.choices.map((value, ndx) => (
-              <Option key={ndx} value={value.value}>
-                {value.display_name}
-              </Option>
-            ))}
-          </Select>
+            <Select
+              defaultValue="Lucy"
+              value={this.props.values[key]}
+              onChange={event => {
+                setFieldValue(key, event);
+              }}
+              onBlur={() => setFieldTouched(key)}
+              name={key}
+            >
+              {objs.choices.map((value, ndx) => (
+                <Option key={ndx} value={value.value}>
+                  {value.display_name}
+                </Option>
+              ))}
+            </Select>
 
-          <ErrorMessage name="name">{msg => <div>{msg}</div>}</ErrorMessage>
-        </Form.Item>
+            <ErrorMessage name="name">{msg => <div>{msg}</div>}</ErrorMessage>
+          </Form.Item>
+        </Col>
       );
     else if (objs.type === "boolean")
       return (
-        <Form.Item
-          {...formItemLayout}
-          key={key}
-          label={objs.label}
-          help={objs.help_text}
-        >
-          <Switch
-            placeholder="Basic usage"
-            value={this.props.values[key]}
-            onChange={event => {
-              setFieldValue(key, event);
-            }}
-            onBlur={() => setFieldTouched(key)}
-            name={key}
-            defaultChecked
-          />
+        <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+          <Form.Item
+            {...formItemLayout}
+            key={key}
+            label={objs.label}
+            help={objs.help_text}
+          >
+            <Switch
+              placeholder="Basic usage"
+              value={this.props.values[key]}
+              onChange={event => {
+                setFieldValue(key, event);
+              }}
+              onBlur={() => setFieldTouched(key)}
+              name={key}
+              defaultChecked
+            />
 
-          <ErrorMessage name="name">{msg => <div>{msg}</div>}</ErrorMessage>
-        </Form.Item>
+            <ErrorMessage name="name">{msg => <div>{msg}</div>}</ErrorMessage>
+          </Form.Item>
+        </Col>
       );
     else if (objs.type === "field")
       return (
-        <Form.Item
-          {...formItemLayout}
-          key={key}
-          label={objs.label}
-          help={objs.help_text}
-          required={objs.required}
-        >
-          {" "}
-          <Row gutter={8}>
-            <Col span={12}>
-              <Select
-                defaultValue="Lucy"
-                value={this.props.values[key]}
-                onChange={event => {
-                  setFieldValue(key, event);
+        <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+          <Form.Item
+            {...formItemLayout}
+            key={key}
+            label={objs.label}
+            help={objs.help_text}
+            required={objs.required}
+          >
+            {" "}
+            <Row gutter={8}>
+              <Col span={12}>
+                <Select
+                  defaultValue="Lucy"
+                  value={this.props.values[key]}
+                  onChange={event => {
+                    setFieldValue(key, event);
+                  }}
+                  onBlur={() => setFieldTouched(key)}
+                  name={key}
+                >
+                  {DataPolicyFileds[key + "meta"].map((value, ndx) => (
+                    <Option key={ndx} value={value.id}>
+                      {value.name + " / " + value.date}
+                    </Option>
+                  ))}
+                </Select>
+              </Col>
+              <Col span={8}>
+                <Button
+                  onClick={this.FieldView}
+                  id={this.props.values[key]}
+                  value={key}
+                >
+                  {"View"}
+                </Button>
+              </Col>
+            </Row>
+            <ErrorMessage name="name">{msg => <div>{msg}</div>}</ErrorMessage>
+            {this.state.visible && this.state.drawer === key ? (
+              <Drawer
+                width={480}
+                title={objs.label}
+                placement="right"
+                closable={false}
+                onClose={e => {
+                  this.onCloseDrawer(e, key);
                 }}
-                onBlur={() => setFieldTouched(key)}
-                name={key}
+                visible={this.state.visible}
               >
-                {DataPolicyFileds[key + "meta"].map((value, ndx) => (
-                  <Option key={ndx} value={value.id}>
-                    {value.name + " / " + value.date}
-                  </Option>
-                ))}
-              </Select>
-            </Col>
-            <Col span={8}>
-              <Button
-                onClick={this.FieldView}
-                id={this.props.values[key]}
-                value={key}
-              >
-                {"View"}
-              </Button>
-            </Col>
-          </Row>
-          <ErrorMessage name="name">{msg => <div>{msg}</div>}</ErrorMessage>
-          {this.state.visible && this.state.drawer === key ? (
-            <Drawer
-              width={480}
-              title={objs.label}
-              placement="right"
-              closable={false}
-              onClose={e => {
-                this.onCloseDrawer(e, key);
-              }}
-              visible={this.state.visible}
-            >
-              {this.UpStory(key, this.props.values[key])}
-            </Drawer>
-          ) : null}
-        </Form.Item>
+                {this.UpStory(key, this.props.values[key])}
+              </Drawer>
+            ) : null}
+          </Form.Item>
+        </Col>
       );
   };
   render() {
@@ -594,7 +602,7 @@ class MyFormM extends React.Component {
         size="small"
         title="전송정책"
         style={{
-          width: 500,
+          width: "100%",
           background: "#ECECEC"
         }}
         extra={
@@ -617,17 +625,19 @@ class MyFormM extends React.Component {
           }}
         />
         <Form onSubmit={handleSubmit} type="flex">
-          {Object.keys(DataPolicySchema).map((oneKey, i) => {
-            return this.buildFormEntries(
-              oneKey,
-              DataPolicySchema[oneKey],
-              setFieldValue,
-              setFieldTouched
-            );
-          })}
-          <Form.Item {...formItemLayout}>
-            <Button htmlType="submit">Submit</Button>
-          </Form.Item>
+          <Row>
+            {Object.keys(DataPolicySchema).map((oneKey, i) => {
+              return this.buildFormEntries(
+                oneKey,
+                DataPolicySchema[oneKey],
+                setFieldValue,
+                setFieldTouched
+              );
+            })}
+            <Form.Item {...formItemLayout}>
+              <Button htmlType="submit">Submit</Button>
+            </Form.Item>
+          </Row>
         </Form>
       </Card>
     );
