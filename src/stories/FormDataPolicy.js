@@ -402,7 +402,7 @@ function tUpStory(key, ndx) {
 
   const SpecificStory = componet.component;
   if (SpecificStory === undefined) {
-    console.log(key);
+    // console.log(key);
   }
   return <SpecificStory />;
 }
@@ -419,14 +419,14 @@ class MyFormM extends React.Component {
     });
   };
   onCloseDrawer = (e, key) => {
-    console.log(key);
+    // console.log(key);
     this.setState({
       visible: false,
       drawer: null
     });
   };
   FieldView = e => {
-    console.log(e.target.value, e.target.id);
+    // console.log(e.target.value, e.target.id);
     this.setState({
       visible: true,
       drawer: e.target.value
@@ -438,7 +438,7 @@ class MyFormM extends React.Component {
 
     const SpecificStory = componet.component;
     if (SpecificStory === undefined) {
-      console.log(key);
+      //console.log(key);
     }
     return <SpecificStory />;
   };
@@ -450,7 +450,7 @@ class MyFormM extends React.Component {
   buildFormEntries = (key, objs, setFieldValue, setFieldTouched) => {
     if (objs.type === "string")
       return (
-        <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+        <Col xs={24} sm={24} md={24} lg={24} xl={12} key={key}>
           <Form.Item
             {...formItemLayout}
             key={key}
@@ -474,7 +474,7 @@ class MyFormM extends React.Component {
       );
     else if (objs.type === "choice")
       return (
-        <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+        <Col xs={24} sm={24} md={24} lg={24} xl={12} key={key}>
           <Form.Item
             {...formItemLayout}
             key={key}
@@ -503,7 +503,7 @@ class MyFormM extends React.Component {
       );
     else if (objs.type === "boolean")
       return (
-        <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+        <Col xs={24} sm={24} md={24} lg={24} xl={12} key={key}>
           <Form.Item
             {...formItemLayout}
             key={key}
@@ -527,7 +527,7 @@ class MyFormM extends React.Component {
       );
     else if (objs.type === "field")
       return (
-        <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+        <Col xs={24} sm={24} md={24} lg={24} xl={12} key={key}>
           <Form.Item
             {...formItemLayout}
             key={key}

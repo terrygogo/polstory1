@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import { Card, Button, Row, Col, Modal, Table, Popover } from "antd";
+import { PageHeader, Typography } from "antd";
 import moment, { relativeTimeRounding } from "moment";
 import UserEntry from "./UserEntry";
 import FormDataPolicy from "./FormDataPolicy";
 import "./AddUser.css";
+
+const { Paragraph } = Typography;
 // import { radios } from "@storybook/addon-knobs";
 // import { RowSelectionType } from "antd/lib/table";
 
@@ -165,7 +168,7 @@ class AddUser extends Component {
 
   onChange = activeKey => {};
   onSetActivateKey = my => {
-    this.setState({ activeKey: my });
+     this.setState({ activeKey: my });
   };
   handleAdd = () => {
     const newelement = {
@@ -227,7 +230,8 @@ class AddUser extends Component {
   componentDidMount = () => {
     let newSelectedRowKeys = [];
     newSelectedRowKeys.push(this.state.DataPolicyInstance[0]);
-    this.setState({ selected: newSelectedRowKeys });
+   this.setState({ selected: newSelectedRowKeys });
+    console.log("cdm");
     // moment.locale("kr");
   };
   // Normally you would want to split things out into separate components.
@@ -243,6 +247,7 @@ class AddUser extends Component {
       selectedRowKeys,
       onChange: (selectedRowKeys, selectedRows) => {
         this.setState({ selectedRowKeys });
+        console.log("cdsms");
         /*
         console.log(
           `selectedRowKeys: ${selectedRowKeys}`,
@@ -255,8 +260,8 @@ class AddUser extends Component {
         let haba = JSON.parse(JSON.stringify(selectedRows));
         this.setState({ selected: haba });
         this.setState({ activerow: haba[0].id });
-
-        console.log(selectedRows);
+        console.log("cdsm");
+        // console.log(selectedRows);
       },
       onSelectAll: (selected, selectedRows, changeRows) => {
         // console.log(selected, selectedRows, changeRows);
@@ -324,7 +329,7 @@ class AddUser extends Component {
                     this.selectRow(record);
                   },
                   onMouseEnter: () => {
-                    console.log(record);
+                    //console.log(record);
                   }
                 })}
               />
