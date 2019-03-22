@@ -12,6 +12,7 @@ import FormDataPolicy from "./FormDataPolicy";
 import FormInTransPolicy from "./FormInTransmissionPolicy";
 import FormFileExportPolicy from "./FormFileExportPolicy";
 import AddUser from "./AddUser";
+import PolicyMainTableStyle from "./PolicyMainTableStyle";
 import PolicyPane from "./PolicyPane";
 import { Button } from "antd";
 import {
@@ -41,6 +42,13 @@ stories
       padding: "0px"
     });
     return <AddUser name="Add USer" style={otherStyles} />;
+  })
+  .add("전송 정책 표로 보기 ", () => {
+    const otherStyles = object("Styles", {
+      borderRadius: 10,
+      padding: "0px"
+    });
+    return <PolicyMainTableStyle name="Add USer" style={otherStyles} />;
   })
   .add("Data Policy", () => {
     return <FormDataPolicy name="전송정책" />;
