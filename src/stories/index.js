@@ -3,7 +3,7 @@ import React from "react";
 import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
 import { linkTo } from "@storybook/addon-links";
-import centered from "@storybook/addon-centered";
+import centered from "@storybook/addon-centered/react";
 
 import FormIk from "./Formik";
 import FormDate from "./FormDate";
